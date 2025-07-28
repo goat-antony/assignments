@@ -1,0 +1,60 @@
+import numpy as np
+from sklearn.datasets import fetch_california_housing
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+
+# 1. Load the Dataset
+print("Loading the California Housing dataset...")
+housing = fetch_california_housing(as_frame=True)
+X = housing.data
+y = housing.target
+print("Dataset loaded successfully.")
+print(f"Features (X) shape: {X.shape}")
+print(f"Target (y) shape: {y.shape}\n")
+
+# Display first few rows of features and target
+print("First 5 rows of features (X):")
+print(X.head())
+print("\nFirst 5 rows of target (y):")
+print(y.head())
+print("-" * 50 + "\n")
+
+# 2. Prepare the Data (Already done in step 1 by separating X and y)
+
+# 3. Split Data into Training and Testing Sets
+print("Splitting data into training and testing sets (80% train, 20% test)...")
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+print(f"X_train shape: {X_train.shape}")
+print(f"X_test shape: {X_test.shape}")
+print(f"y_train shape: {y_train.shape}")
+print(f"y_test shape: {y_test.shape}\n")
+
+# 4. Train the Model
+print("Initializing and training the Multiple Linear Regression model...")
+model = LinearRegression()
+model.fit(X_train, y_train)
+print("Model training complete.")
+print(f"Model coefficients: {model.coef_}")
+print(f"Model intercept: {model.intercept_}\n")
+
+# 5. Make Predictions
+print("Making predictions on the test set...")
+y_pred = model.predict(X_test)
+print("Predictions complete.")
+print(f"First 5 actual values (y_test): {y_test.head().values}")
+print(f"First 5 predicted values (y_pred): {y_pred[:5]}\n")
+
+
+# 6. Evaluate Performance
+print("Evaluating model performance...")
+mae = mean_absolute_error(y_test, y_pred)
+mse = mean_squared_error(y_test, y_pred)
+rmse = np.sqrt(mse) # Often reported alongside MSE
+r2 = r2_score(y_test, y_pred)
+
+print(f"Mean Absolute Error (MAE): {mae:.4f}")
+print(f"Mean Squared Error (MSE): {mse:.4f}")
+print(f"Root Mean Squared Error (RMSE): {rmse:.4f}") # Added for more comprehensive evaluation
+print(f"R-squared (R2) Score: {r2:.4f}")
+print("\nModel evaluation complete.")
